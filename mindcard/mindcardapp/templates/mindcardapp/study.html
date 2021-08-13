@@ -1,0 +1,74 @@
+{% extends "mindcardapp/layout.html" %}
+
+{% block title %}{{ deck.name }}{% endblock %}
+
+{% block script %}
+{% load static %}
+<script src="{% static 'mindcardapp/study.js' %}"></script>
+{{ cards|json_script:"cards" }}
+{% endblock %}
+{% block body %}
+
+<div class='row' id='study_info'>
+    <div class='col-auto study-info-column with-icon'><a class='nav-link' href='/mindcardapp/deck'><span class="glyphicon glyphicon glyphicon-share-alt float-left" style='transform: scaleX(-1);'></span><span class='remove-on-narrow float-right'>&nbsp;Back</span></a></div>
+    <div class='col-auto study-info-column' id='study_progress'></div>
+    <div class='col-auto study-info-column with-icon'><a class='nav-link' href='#' data-toggle='modal' data-target='#settings_modal'><span class="glyphicon glyphicon-cog float-left"></span><span class='remove-on-narrow float-right'>&nbsp;Settings</span></a></div>
+</div>
+
+<div class='container' id='all_cards_flipping'>
+   <div class="card-content">
+      <div id='front' class="card-face card-front"></div>
+      <div class="card-face card-back">
+        <br>
+        <div id="back"></div>
+        <div hidden id="order"></div>
+        <br>
+        <div id='study_buttons'>
+            <div class='study-button button' id='study_again_div'><button id='study_again'>1 | Study again</button></div>
+            <div class='study-button button' id='got_it_div'><button id='got_it'>2 | Got it</button></div>
+        </div>
+      </div>
+   </div>
+   <h1 id="finished">Deck Complete!
+        <br>
+        <button id='restart'><span class="glyphicon glyphicon-repeat"></span> Study Again</button>
+   </h1>
+</div>
+
+<div id='card_nav_buttons'>
+    <div class='card-nav float-left'><button id='card_nav_left'><span class="glyphicon glyphicon-chevron-left"></span></button></div>
+    <div class='card-nav float-right'><button id='card_nav_right'><span class="glyphicon glyphicon-chevron-right"></span></button></div>
+</div>
+
+<div id="settings_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Settings & Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal" id="settings_modal_close">&times;</button>
+            </div>
+            <!-- Form for new card-->
+            <div class="modal-body">
+                <div class='row'>
+                    <div class='col-sm-6'>
+                        <form action='{% url "mindcardapp:study" %}' method='post' id='settings_form'>
+                            {% csrf_token %}
+                            {{ study_settings.as_p }}
+                            <input class='button' type='submit' id="settings_submit" value='Start'>
+                        </form>
+                        <div class='error-message' id='settings_status'></div>
+                    </div>
+                    <div class='col-sm-6'>
+                        <h3>Keyboard shortcuts</h3>
+                        <p>Up arrow, down arrow, or space to flip card</p>
+                        <p>Right and left arrow to navigate between cards<p>
+                        <p>1 for study again</p>
+                        <p>2 for got it</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

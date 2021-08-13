@@ -1,0 +1,47 @@
+{% extends "mindcardapp/layout.html" %}
+
+{% block title%}Login{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+    $('input').each(function(){
+        this.oninvalid = function(e){
+            if (!e.target.validity.valid) {
+                switch(e.target.id){
+                    case 'login_username': 
+                    e.target.setCustomValidity("Please enter your username");
+                    break;
+
+                    case 'login_password': 
+                    e.target.setCustomValidity("Please enter your password");
+                    break;
+
+                    default : e.target.setCustomValidity("");
+                    break;
+                };
+            };
+            this.oninput = function(e) {
+                e.target.setCustomValidity("");
+            };
+        };
+    });
+});
+</script>
+{% endblock %}
+
+{% block body%}
+    <h1>Login</h1>
+    <form action="{% url 'mindcardapp:login' %}" class="authentication-form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p>
+        {% for message in messages %}
+            <div class='authentication-error'>
+                {{ message }}
+            </div>
+        {% endfor %}
+        </p>
+        <input class='button' type='submit' value='Log in'>
+    </form>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "mindcardapp/layout.html" %}
+
+{% block title%}Sign Up{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+    $('input').each(function(){
+        this.oninvalid = function(e){
+            if (!e.target.validity.valid) {
+                switch(e.target.id){
+                    case 'register_email': 
+                    e.target.setCustomValidity("Please enter a valid email");
+                    break;
+
+                    case 'register_username': 
+                    e.target.setCustomValidity("Please enter your username");
+                    break;
+
+                    case 'register_password': 
+                    e.target.setCustomValidity("Please enter your password");
+                    break;
+
+                    case 'register_confirm': 
+                    e.target.setCustomValidity("Please confirm your password");
+                    break;
+
+                    default: e.target.setCustomValidity("");
+                    break;
+                };
+            };
+
+            this.oninput = function(e) {
+                if (this.validity.valueMissing){
+                switch(this.id){
+                    case 'register_email': 
+                    e.target.setCustomValidity("Please enter a valid email address");
+                    break;
+
+                    case 'register_username': 
+                    e.target.setCustomValidity("Please enter your username");
+                    break;
+
+                    case 'register_password': 
+                    e.target.setCustomValidity("Please enter your password");
+                    break;
+
+                    case 'register_confirm': 
+                    e.target.setCustomValidity("Please confirm your password");
+                    break;
+
+                    default: e.target.setCustomValidity('');
+                    break;
+                }
+            }
+            else {
+                    e.target.setCustomValidity('');
+                };
+            };
+        };
+    });
+});
+</script>
+{% endblock %}
+
+{% block body%}
+    <h1>Register</h1>
+    <form action="{% url 'mindcardapp:register' %}" class="authentication-form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p>
+        {% for message in messages %}
+            <div class='authentication-error'>
+                {{ message }}
+            </div>
+        {% endfor %}
+        </p>
+        <input class='button' type='submit' value='Sign Up'>
+    </form>
+{% endblock %}

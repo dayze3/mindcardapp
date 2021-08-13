@@ -1,0 +1,25 @@
+{% extends "mindcardapp/layout.html" %}
+
+{% block title%}Home{% endblock %}
+{% block script %}
+{% load static %}
+<script src="{% static 'mindcardapp/index.js' %}"></script>
+{% endblock %}
+{% block body%}
+    <h1>Decks</h1>
+    <div id='decks'>
+        {% for deck in decks %}
+        <div class="deck-card" id='deck_{{ deck.id }}'>
+            <div class='deck-content'>
+                <div class='deck-front deck-face' id='name_{{ deck.id }}'>{{ deck.name }}</div>
+                <div class='deck-back deck-face'>
+                    <div class='deck-card-info'>Created: <div id='created_{{ deck.id }}'>{{ deck.created.isoformat }}</div></div>
+                    <br>
+                    <div class='deck-card-info'>Modified: <div id='modified_{{ deck.id }}'>{{ deck.modified.isoformat }}</div></div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class='empty'>Click "New Deck" to create your first deck!</div>
+{% endblock %}
