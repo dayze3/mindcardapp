@@ -8,9 +8,7 @@ $(document).ready(function()
     var studied = 0;
     var cards = [];
     var past_counters = [];
-    var dict_counter = 0;
     var rewind = 0;
-    var card_dict = {};
     create_card_array();
     swipe();
 
@@ -19,13 +17,10 @@ $(document).ready(function()
     // Set up for first card
     if (window.order === 'random') {
         card_counter = Math.floor(Math.random() * cards.length);
-        console.log(card_counter);
     }
     else {
         card_counter = 0;
-        console.log(card_counter);
     };
-    console.log(cards);
 
     display_card();
     $('#study_progress').text(studied + '/' + cards.length);
@@ -111,6 +106,94 @@ $(document).ready(function()
         $('#study_progress').text(studied + '/' + cards.length);
     };
 
+    $('#card_nav_left').on('click touchend', function(){
+        if (rewind > 0) {
+            rewind -= 1;
+        };
+        card_counter = past_counters[rewind];
+        
+        console.log('card counter: ' + card_counter);
+        console.log('back rewind: ' + rewind);
+        console.log('');
+        display_card();
+
+        if ($('.card-content').hasClass('flipped')){
+            $('.card-content').toggleClass('flipped');
+        };
+    });
+
+    $('#card_nav_right').on('click touchend', function(){
+        set_card_counter();
+        display_card();
+        if ($('.card-content').hasClass('flipped')){
+            $('.card-content').toggleClass('flipped');
+        };
+    });
+
+    $('#study_again').on('click touchend', function(e){
+        e.stopPropagation();
+        e.preventDefault();
+        if (cards[card_counter]['study'] == false) {
+            studied--;
+        }
+        cards[card_counter]['study'] = true;
+        set_card_counter();
+        display_card();
+
+        $('#study_again').blur();
+        
+        if ($('.card-content').hasClass('flipped')){
+            $('.card-content').toggleClass('flipped');
+        };
+    });
+
+    $('#got_it').on('click touchend', function(e){
+        e.stopPropagation();
+        e.preventDefault();
+        if (cards[card_counter]['study'] == true) {
+            studied++;
+        }
+        cards[card_counter]['study'] = false;
+        
+        if (studied === cards.length) {
+            console.log('done');
+            $('#study_progress').text(studied + '/' + cards.length);
+            $('.card-content').hide();
+            $('#card_nav_buttons').hide();
+            $('#finished').show();
+            return;
+        };
+        set_card_counter();
+        display_card();
+        if ($('.card-content').hasClass('flipped')){
+            $('.card-content').toggleClass('flipped');
+        }
+        $('#got_it').blur();
+    });
+
+    $('.card-content').on('click touchend', function(){
+        $('.card-content').toggleClass('flipped');
+    });
+
+    $('#restart').click(function(){
+        console.log('restart');
+        $('#restart').blur();
+        $('#finished').hide();
+        studied = 0;
+        card_counter = 0;
+        past_counters.length = 0;
+        rewind = 0;
+        for (var i = 0; i < cards.length; i++) {
+            cards[i]['study'] = true;
+        };
+
+        display_card();
+        if ($('.card-content').hasClass('flipped')){
+            $('.card-content').toggleClass('flipped');
+        };
+        $('.card-content').show();
+    });
+
     function set_card_counter() {
         if (rewind < past_counters.length - 1 && rewind >= 0){
             rewind++;
@@ -148,90 +231,6 @@ $(document).ready(function()
         console.log('rewind: ' + rewind);
         console.log("");
     };
-
-    $('#study_again').on('click touchend', function(e){
-        e.stopPropagation();
-        e.preventDefault();
-        set_card_counter();
-        display_card();
-
-        $('#study_again').blur();
-        
-        if ($('.card-content').hasClass('flipped')){
-            $('.card-content').toggleClass('flipped');
-        };
-    });
-
-    $('#card_nav_left').on('click touchend', function(){
-        if (rewind > 0) {
-            rewind -= 1;
-        };
-        card_counter = past_counters[rewind];
-        
-        console.log('card counter: ' + card_counter);
-        console.log('back rewind: ' + rewind);
-        console.log('');
-        display_card();
-
-        if ($('.card-content').hasClass('flipped')){
-            $('.card-content').toggleClass('flipped');
-        };
-    });
-
-    $('#card_nav_right').on('click touchend', function(){
-        set_card_counter();
-        display_card();
-        if ($('.card-content').hasClass('flipped')){
-            $('.card-content').toggleClass('flipped');
-        };
-    });
-
-    $('#got_it').on('click touchend', function(e){
-        e.stopPropagation();
-        e.preventDefault();
-        studied++;
-        cards[card_counter]['study'] = false;
-        if (rewind !== past_counters.length) {
-            cards[card_counter]['rewind_study'] = false;
-        }
-
-        if (studied === cards.length) {
-            console.log('done');
-            $('#study_progress').text(studied + '/' + cards.length);
-            $('.card-content').hide();
-            $('#finished').show();
-            return;
-        };
-        set_card_counter();
-        display_card();
-        if ($('.card-content').hasClass('flipped')){
-            $('.card-content').toggleClass('flipped');
-        }
-        $('#got_it').blur();
-    });
-
-    $('.card-content').on('click touchend', function(){
-        $('.card-content').toggleClass('flipped');
-    });
-
-    $('#restart').click(function(){
-        console.log('restart');
-        $('#restart').blur();
-        $('#finished').hide();
-        studied = 0;
-        card_counter = 0;
-        past_counters.length = 0;
-        rewind = 0;
-        for (var i = 0; i < cards.length; i++) {
-            cards[i]['study'] = true;
-        };
-
-        display_card();
-        if ($('.card-content').hasClass('flipped')){
-            $('.card-content').toggleClass('flipped');
-        };
-        $('.card-content').show();
-    });
 
     function swipe() {
         let touchstartX = 0;
@@ -305,6 +304,8 @@ $(document).ready(function()
     };
 
     function create_card_array() {
+        var dict_counter = 0;
+        var card_dict = {};
         for (var i = 0; i < cards_data.length; i++) {
             // Data already split by comma, now spliting key and value
             var split_card = cards_data[i].split(': ');

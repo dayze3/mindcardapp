@@ -112,9 +112,9 @@ $(document).ready(function()
         };
         card_counter = past_counters[rewind];
         
-        /* console.log('card counter: ' + card_counter);
+        console.log('card counter: ' + card_counter);
         console.log('back rewind: ' + rewind);
-        console.log(''); */
+        console.log('');
         display_card();
 
         if ($('.card-content').hasClass('flipped')){
@@ -133,10 +133,10 @@ $(document).ready(function()
     $('#study_again').on('click touchend', function(e){
         e.stopPropagation();
         e.preventDefault();
-        cards[card_counter]['study'] = true;
-        if (cards[card_counter]['study'] == false){
+        if (cards[card_counter]['study'] == false) {
             studied--;
-        };
+        }
+        cards[card_counter]['study'] = true;
         set_card_counter();
         display_card();
 
@@ -150,7 +150,7 @@ $(document).ready(function()
     $('#got_it').on('click touchend', function(e){
         e.stopPropagation();
         e.preventDefault();
-        if (cards[card_counter]['study'] === true) {
+        if (cards[card_counter]['study'] == true) {
             studied++;
         }
         cards[card_counter]['study'] = false;
@@ -224,12 +224,12 @@ $(document).ready(function()
             };
             past_counters.push(card_counter);
         };
-        /* console.log("card counter: " + card_counter);
+        console.log("card counter: " + card_counter);
         console.log('studied: ' + studied);
         console.log('past counter length: ' + past_counters.length);
         console.log('past counters: ' + past_counters)
         console.log('rewind: ' + rewind);
-        console.log(""); */
+        console.log("");
     };
 
     function swipe() {
@@ -277,9 +277,9 @@ $(document).ready(function()
                 };
                 card_counter = past_counters[rewind];
                 
-                /* console.log('card counter: ' + card_counter);
+                console.log('card counter: ' + card_counter);
                 console.log('back rewind: ' + rewind);
-                console.log(''); */
+                console.log('');
                 display_card();
     
                 if ($('.card-content').hasClass('flipped')){

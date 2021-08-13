@@ -35,7 +35,7 @@ body {
     #new_deck { margin-top: 5px; }
     #navbar-toggler { width: 50px; height: 30px; float: right; }
     .remove-on-narrow { display: none; }
-    .study-button { margin: 10px auto; }
+    .study-button { margin: 10px; text-align: left; }
     br { display: block; content: ""; margin-top: 5px; }
 }
 
@@ -58,7 +58,7 @@ h3 {
     color: #2b4a4a;
 }
 
-.nav-link {
+.nav-link, a .nav-link:focus {
     color: var(--darkgreen);
     padding: 2px;
 }
