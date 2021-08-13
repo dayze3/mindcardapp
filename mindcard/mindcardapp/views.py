@@ -36,6 +36,7 @@ def register(request):
                     group = Group.objects.get(name='People')
                     group.user_set.add(user)
                     request.session['deck'] = None
+                    login(request, user)
                     return HttpResponseRedirect(reverse("mindcardapp:index"))
                 else:
                     print('username taken')
