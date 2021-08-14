@@ -31,8 +31,6 @@
             <div class="card-text col-sm-6" id="back_{{ card.id }}">{{ card.back }}</div>
         </div>
     </div>
-    {% empty %}
-    <div>Click on add card to add a card!</div>
     {% endfor %}
     <button id="add_card_button" class='button'><a class="nav-link" href="#" data-toggle="modal" data-target="#add_card"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add Card</a></button>
 </div>
