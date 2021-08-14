@@ -25,7 +25,7 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-sm navbar-light">
-            <a class="nav-link" href='/mindcardapp/'><img src="{% static 'mindcardapp/logo.jpg' %}" alt='logo' width='60vw'></a>
+            <a class="nav-link" href=''><img src="{% static 'mindcardapp/logo.jpg' %}" alt='logo' width='60vw'></a>
             <button class="navbar-toggler" id="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsed" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             
             {% if user.is_authenticated %}
@@ -34,14 +34,14 @@
                     <li class="nav-item" id="new_deck"><a class="nav-link" href="#" data-toggle="modal" data-target="#create_deck"><span class="glyphicon glyphicon-pencil navicon"></span> New Deck</a><li>
                 </ul>
                 <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="/mindcardapp/logout"><span class="glyphicon glyphicon-log-out navicon" aria-hidden="true"></span> Log Out</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/logout"><span class="glyphicon glyphicon-log-out navicon" aria-hidden="true"></span> Log Out</a></li>
                 </ul>
             </div>
             {% else %}
             <div class="collapse navbar-collapse" id="navbar-collapsed">
                 <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item" id='login_button'><a class="nav-link" href="/mindcardapp/login"><span class="glyphicon glyphicon-log-in navicon" aria-hidden="true"></span> Log In    </a></li>
-                    <li class="nav-item" id="signup_button"><a class="nav-link" href="/mindcardapp/register"><span class="glyphicon glyphicon-user navicon" aria-hidden="true"></span> Register</a></li>
+                    <li class="nav-item" id='login_button'><a class="nav-link" href="/login"><span class="glyphicon glyphicon-log-in navicon" aria-hidden="true"></span> Log In    </a></li>
+                    <li class="nav-item" id="signup_button"><a class="nav-link" href="/register"><span class="glyphicon glyphicon-user navicon" aria-hidden="true"></span> Register</a></li>
                 </ul>
             </div>
             {% endif %}
