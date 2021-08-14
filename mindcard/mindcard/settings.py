@@ -34,7 +34,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['https://mindcardapp.herokuapp.com/', 'localhost', '127.0.0.1']
 
-LOGIN_URL = '/mindcardapp/login'
+LOGIN_URL = '/login'
 
 # Application definition
 
