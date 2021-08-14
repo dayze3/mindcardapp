@@ -131,7 +131,7 @@ $(document).ready(function()
     
             success : function() {
                 $('#rename_deck_modal').modal('hide');
-                $('#deck_info').load(location.href+" #deck_info>*","");
+                $('#deck_name_heading').load(location.href+" #deck_name_heading>*","");
             },
     
             error : function(xhr,errmsg) {
