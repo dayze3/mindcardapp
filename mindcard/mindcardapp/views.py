@@ -87,6 +87,7 @@ def create_deck(request):
         if form.is_valid(): 
             name = form.cleaned_data['name']
             deck = Deck.objects.create(user=request.user, name=name)
+            deck.save()
             request.session['deck'] = deck.id
         return HttpResponseRedirect(reverse('mindcardapp:deck'))
 
