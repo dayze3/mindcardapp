@@ -89,6 +89,9 @@ def create_deck(request):
             deck = Deck(user=request.user, name=name)
             deck.save()
             request.session['deck'] = deck.id
+        else:
+            messages.error(request,"Sorry, please try again")
+            return HttpResponseRedirect(reverse("mindcardapp:index"))
         return HttpResponseRedirect(reverse('mindcardapp:deck'))
 
 @login_required
