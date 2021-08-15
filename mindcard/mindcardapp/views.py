@@ -86,7 +86,7 @@ def create_deck(request):
         form = RenameDeck(request.POST)
         if form.is_valid(): 
             name = form.cleaned_data['name']
-            same_name = Deck.objects.filter(name=name)
+            same_name = Deck.objects.filter(user=request.user, name=name)
             if len(same_name) == 0:
                 deck = Deck(user=request.user, name=name)
                 deck.save()
@@ -195,13 +195,13 @@ def rename_deck(request):
         deck_id = request.POST.get('id')
         name = request.POST.get('name')
         same_name = Deck.objects.filter(name=name)
+        response_data = {}
         if len(same_name) == 0:
-            deck = Deck.objects.get(pk=deck_id)
+            deck = Deck.objects.get(user=request.user, pk=deck_id)
             deck.name = name
             deck.save()
         else:
-            messages.error(request, "A deck with this name already exists")
-        response_data = {}
+            response_data['errmsg']='A deck with this name already exists'
         return JsonResponse(response_data)
     else:
         return HttpResponseRedirect(reverse('mindcardapp:deck'))
