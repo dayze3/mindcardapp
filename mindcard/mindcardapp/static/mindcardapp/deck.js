@@ -117,6 +117,10 @@ $(document).ready(function()
         });
     });
 
+    $('#rename_deck_modal').on('show.bs.modal', function(){
+        $('#rename_deck_form').find('#deck_name').focus();
+    });
+
     // Rename deck
     $('#rename_deck_form').submit(function(event){
         event.preventDefault();
@@ -139,6 +143,10 @@ $(document).ready(function()
                 console.log(xhr.status + ": " + xhr.responseText);
             }
         });
+    });
+
+    $('#create_deck').on('show.bs.modal', function(){
+        $('#create_deck').find('#deck_name').focus();
     });
 
     $('.modal').each(function(){
