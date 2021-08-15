@@ -5,7 +5,7 @@ from django.utils import timezone
 # Create your models here.
 class Deck(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    name = models.CharField(max_length=280, unique=True)
+    name = models.CharField(max_length=280)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     def __str__(self):

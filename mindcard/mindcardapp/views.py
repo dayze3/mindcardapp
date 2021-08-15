@@ -86,13 +86,9 @@ def create_deck(request):
         form = RenameDeck(request.POST)
         if form.is_valid(): 
             name = form.cleaned_data['name']
-            same_name = Deck.objects.filter(user=request.user, name=name)
-            if len(same_name) == 0:
-                deck = Deck(user=request.user, name=name)
-                deck.save()
-                request.session['deck'] = deck.id
-            else:
-                messages.error(request, "A deck with this name already exists")
+            deck = Deck(user=request.user, name=name)
+            deck.save()
+            request.session['deck'] = deck.id
         return HttpResponseRedirect(reverse('mindcardapp:deck'))
 
 @login_required
@@ -194,15 +190,10 @@ def rename_deck(request):
     if request.method == 'POST':
         deck_id = request.POST.get('id')
         name = request.POST.get('name')
-        same_name = Deck.objects.filter(name=name)
+        deck = Deck.objects.get(user=request.user, pk=deck_id)
+        deck.name = name
+        deck.save()
         response_data = {}
-        if len(same_name) == 0:
-            deck = Deck.objects.get(user=request.user, pk=deck_id)
-            deck.name = name
-            deck.save()
-        else:
-            response = JsonResponse({"error": "A deck with this name already exists"})
-            return response
         return JsonResponse(response_data)
     else:
         return HttpResponseRedirect(reverse('mindcardapp:deck'))

@@ -58,11 +58,6 @@
                             {% csrf_token %}
                             {{ rename_deck }}
                             <input class='button' type='submit' value='Create'>
-                            {% for message in messages %}
-                                <div class='authentication-error'>
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
                         </form>
                     </div>
                 </div>

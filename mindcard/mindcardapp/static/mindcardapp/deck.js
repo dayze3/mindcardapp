@@ -29,8 +29,8 @@ $(document).ready(function()
             $('#all_cards').load(location.href+" #all_cards>*","");
         },
 
-        error : function(data, xhr) {
-            $('#add_status').text(data.responseJSON.error);
+        error : function(xhr,errmsg) {
+            $('#add_status').text(errmsg);
             console.log(xhr.status + ": " + xhr.responseText);
         }
         });
