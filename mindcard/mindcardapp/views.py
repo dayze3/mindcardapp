@@ -201,7 +201,8 @@ def rename_deck(request):
             deck.name = name
             deck.save()
         else:
-            response_data['errmsg']='A deck with this name already exists'
+            response = JsonResponse({"error": "A deck with this name already exists"})
+            return response
         return JsonResponse(response_data)
     else:
         return HttpResponseRedirect(reverse('mindcardapp:deck'))
