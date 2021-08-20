@@ -58,7 +58,7 @@ h3 {
     color: #2b4a4a;
 }
 
-.nav-link, a .nav-link:focus {
+.nav-link, .nav-link:focus {
     color: var(--darkgreen);
     padding: 2px;
 }

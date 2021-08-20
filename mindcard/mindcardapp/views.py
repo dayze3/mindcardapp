@@ -37,10 +37,8 @@ def register(request):
                     login(request, user)
                     return HttpResponseRedirect(reverse("mindcardapp:index"))
                 else:
-                    print('username taken')
                     messages.error(request, "Username already taken")
             else:
-                print('password does not match')
                 messages.error(request,"Password does not match")
             return HttpResponseRedirect(reverse("mindcardapp:register"))
         else:
