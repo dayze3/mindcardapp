@@ -112,9 +112,9 @@ $(document).ready(function()
         };
         card_counter = past_counters[rewind];
         
-        console.log('card counter: ' + card_counter);
+        /* console.log('card counter: ' + card_counter);
         console.log('back rewind: ' + rewind);
-        console.log('');
+        console.log(''); */
         display_card();
 
         if ($('.card-content').hasClass('flipped')){
@@ -156,7 +156,6 @@ $(document).ready(function()
         cards[card_counter]['study'] = false;
         
         if (studied === cards.length) {
-            console.log('done');
             $('#study_progress').text(studied + '/' + cards.length);
             $('.card-content').hide();
             $('#card_nav_buttons').hide();
@@ -176,12 +175,12 @@ $(document).ready(function()
     });
 
     $('#restart').click(function(){
-        console.log('restart');
         $('#restart').blur();
         $('#finished').hide();
         studied = 0;
         card_counter = 0;
         past_counters.length = 0;
+        past_counters.push(0);
         rewind = 0;
         for (var i = 0; i < cards.length; i++) {
             cards[i]['study'] = true;
@@ -192,6 +191,7 @@ $(document).ready(function()
             $('.card-content').toggleClass('flipped');
         };
         $('.card-content').show();
+        $('#card_nav_buttons').show();
     });
 
     function set_card_counter() {
@@ -224,12 +224,12 @@ $(document).ready(function()
             };
             past_counters.push(card_counter);
         };
-        console.log("card counter: " + card_counter);
+        /* console.log("card counter: " + card_counter);
         console.log('studied: ' + studied);
         console.log('past counter length: ' + past_counters.length);
         console.log('past counters: ' + past_counters)
         console.log('rewind: ' + rewind);
-        console.log("");
+        console.log(""); */
     };
 
     function swipe() {
@@ -259,7 +259,6 @@ $(document).ready(function()
             // Swipe right
             if (touchendX - touchstartX <= -10 && !vertical()) {
                 event.stopImmediatePropagation();
-                console.log('right');
                 set_card_counter();
                 display_card();
                 
@@ -271,15 +270,14 @@ $(document).ready(function()
             // Swipe left
             else if (touchstartX - touchendX <= 10 && !vertical()) {
                 event.stopImmediatePropagation();
-                console.log('left');
                 if (rewind > 0) {
                     rewind -= 1;
                 };
                 card_counter = past_counters[rewind];
                 
-                console.log('card counter: ' + card_counter);
+                /* console.log('card counter: ' + card_counter);
                 console.log('back rewind: ' + rewind);
-                console.log('');
+                console.log(''); */
                 display_card();
     
                 if ($('.card-content').hasClass('flipped')){
