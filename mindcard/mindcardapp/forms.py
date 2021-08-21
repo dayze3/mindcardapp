@@ -71,4 +71,4 @@ class StudySettings(forms.Form):
                             choices=[('ordered','ordered'), ('random','random')], label='Order')
     start = forms.ChoiceField(widget=forms.Select
                             (attrs={'id' : 'study_start'}),
-                            choices=[('term','term'), ('definition','definition')], label='Start with')
+                            choices=[('front','front'), ('back','back')], label='Start with')

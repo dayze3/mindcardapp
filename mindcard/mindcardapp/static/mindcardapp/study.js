@@ -1,7 +1,7 @@
 $(document).ready(function()
 {
     window.order = 'ordered';
-    window.start = 'term';
+    window.start = 'front';
     $('#finished').hide();
     const csrftoken = Cookies.get('csrftoken');
     const cards_data = JSON.parse(document.getElementById('cards').textContent).split(', ');
@@ -94,7 +94,7 @@ $(document).ready(function()
     });
 
     function display_card() {
-        if (window.start === 'term') {
+        if (window.start === 'front') {
             $('#front').text(cards[card_counter]['front']);
             $('#back').text(cards[card_counter]['back']);
         }
