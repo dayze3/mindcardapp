@@ -16,12 +16,16 @@
 </div>
 
 <div class='container' id='all_cards_flipping'>
-   <div class="card-content">
-      <div id='front' class="card-face card-front"></div>
+   <div id='card_content' class="card-content">
+      <div class="card-face card-front">
+        <div id='edit_card_div'><button id="edit_card"><a class='nav-link' href="#" data-toggle="modal" data-target="#edit_card_modal"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></button></div>
+        <div id='front_text'></div>
+      </div>
       <div class="card-face card-back">
         <br>
-        <div id="back"></div>
+        <div id="back_text"></div>
         <div hidden id="order"></div>
+        <div hidden id="card_id"></div>
         <br>
         <div id='study_buttons'>
             <div class='study-button button' id='study_again_div'><button id='study_again'>1 | Study again</button></div>
@@ -67,6 +71,28 @@
                         <p>2 for got it</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Card modal -->
+<div id="edit_card_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header">
+                <h2 class="modal-title">Edit Card</h2>
+                <input type="button" class="close" data-dismiss="modal" id="modal_close" value="&times;">
+            </div>
+            <!-- Form to edit card-->
+            <div class="modal-body">
+                <form action="{% url 'mindcardapp:edit_card' %}" method="post" id="edit_card_form">
+                    {% csrf_token %}
+                    {{ edit_card.as_p }}
+                    <input class='button' type="submit" id="edit_card_submit" value="Edit Card">
+                </form>
+                <div class='error-message' id='edit_status'></div>
             </div>
         </div>
     </div>

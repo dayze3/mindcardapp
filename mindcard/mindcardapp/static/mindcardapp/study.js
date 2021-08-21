@@ -93,19 +93,6 @@ $(document).ready(function()
         }
     });
 
-    function display_card() {
-        if (window.start === 'front') {
-            $('#front').text(cards[card_counter]['front']);
-            $('#back').text(cards[card_counter]['back']);
-        }
-        else {
-            $('#front').text(cards[card_counter]['back']);
-            $('#back').text(cards[card_counter]['front']);
-        };
-        $('#order').text(cards[card_counter]['order']);
-        $('#study_progress').text(studied + '/' + cards.length);
-    };
-
     $('#card_nav_left').on('click touchend', function(){
         if (rewind > 0) {
             rewind -= 1;
@@ -194,6 +181,45 @@ $(document).ready(function()
         $('#card_nav_buttons').show();
     });
 
+    // Edit card
+    $('#edit_card_form').submit(function(e) {
+        e.preventDefault();
+        var id = $('#card_id').val();
+        var order = parseInt($('#edit_card_order').val());
+        var front = $('#edit_card_front').val();
+        if (front.length >= 280) {
+            document.getElementById('edit_card_front').setCustomValidity("Card face must have less than 280 characters");
+            return;
+        };
+        var back = $('#edit_card_back').val();
+        if (back.length >= 280) {
+            document.getElementById('edit_card_back').setCustomValidity("Card face must have less than 280 characters");
+            return;
+        };
+
+        $.ajax({
+        url : "edit_card",
+        type : "POST",
+        headers: {'X-CSRFToken': csrftoken},
+        data : { front : front, back : back, order : order, id : id },
+
+        success : function() {
+            $('#edit_card_id').val('');
+            $('#edit_card_order').val('');
+            $('#edit_card_front').val('');
+            $('#edit_card_back').val('');
+            $('#edit_card_modal').modal('hide');
+            $('#card_content').load(location.href+" #card_content>*","");
+        },
+
+        error : function(xhr,errmsg) {
+            $('#edit_status').text(errmsg);
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+        });
+    });
+
+
     function set_card_counter() {
         if (rewind < past_counters.length - 1 && rewind >= 0){
             rewind++;
@@ -230,6 +256,20 @@ $(document).ready(function()
         console.log('past counters: ' + past_counters)
         console.log('rewind: ' + rewind);
         console.log(""); */
+    };
+
+    function display_card() {
+        if (window.start === 'front') {
+            $('#front_text').text(cards[card_counter]['front']);
+            $('#back_text').text(cards[card_counter]['back']);
+        }
+        else {
+            $('#front_text').text(cards[card_counter]['back']);
+            $('#back_text').text(cards[card_counter]['front']);
+        };
+        $('#order').text(cards[card_counter]['order']);
+        $('#card_id').text(cards[card_counter]['id']);
+        $('#study_progress').text(studied + '/' + cards.length);
     };
 
     function swipe() {
