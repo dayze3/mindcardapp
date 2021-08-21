@@ -30,10 +30,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if 'DYNO' not in os.environ:
-    debug = True
-else:
-    debug = False
+DEBUG = False
 
 ALLOWED_HOSTS = ['https://mindcardapp.herokuapp.com/', 'localhost', '127.0.0.1']
 

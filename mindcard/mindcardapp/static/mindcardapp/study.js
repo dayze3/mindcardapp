@@ -23,7 +23,6 @@ $(document).ready(function()
     };
 
     display_card();
-    $('#study_progress').text(studied + '/' + cards.length);
 
     $('#settings_form').submit(function(e){
         e.preventDefault();
