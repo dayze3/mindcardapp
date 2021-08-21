@@ -225,4 +225,4 @@ def study(request):
         deck = Deck.objects.get(pk=request.session['deck'])
         cards = Card.objects.filter(deck__id=request.session['deck']).order_by('order').values('id', 'order', 'front', 'back')
         cards_json = json.dumps(list(cards))
-        return render(request, 'mindcardapp/study.html', {'study_settings': StudySettings(), 'cards':cards_json, 'deck':deck, 'rename_deck': RenameDeck()})
+        return render(request, 'mindcardapp/study.html', {'study_settings': StudySettings(), 'cards':cards_json, 'deck':deck, 'rename_deck': RenameDeck(), 'edit_card': EditCard()})
