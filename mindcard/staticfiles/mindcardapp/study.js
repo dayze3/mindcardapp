@@ -1,7 +1,7 @@
 $(document).ready(function()
 {
     window.order = 'ordered';
-    window.start = 'term';
+    window.start = 'front';
     $('#finished').hide();
     const csrftoken = Cookies.get('csrftoken');
     const cards_data = JSON.parse(document.getElementById('cards').textContent).split(', ');
@@ -23,7 +23,6 @@ $(document).ready(function()
     };
 
     display_card();
-    $('#study_progress').text(studied + '/' + cards.length);
 
     $('#settings_form').submit(function(e){
         e.preventDefault();
@@ -93,28 +92,15 @@ $(document).ready(function()
         }
     });
 
-    function display_card() {
-        if (window.start === 'term') {
-            $('#front').text(cards[card_counter]['front']);
-            $('#back').text(cards[card_counter]['back']);
-        }
-        else {
-            $('#front').text(cards[card_counter]['back']);
-            $('#back').text(cards[card_counter]['front']);
-        };
-        $('#order').text(cards[card_counter]['order']);
-        $('#study_progress').text(studied + '/' + cards.length);
-    };
-
     $('#card_nav_left').on('click touchend', function(){
         if (rewind > 0) {
             rewind -= 1;
         };
         card_counter = past_counters[rewind];
         
-        console.log('card counter: ' + card_counter);
+        /* console.log('card counter: ' + card_counter);
         console.log('back rewind: ' + rewind);
-        console.log('');
+        console.log(''); */
         display_card();
 
         if ($('.card-content').hasClass('flipped')){
@@ -156,7 +142,6 @@ $(document).ready(function()
         cards[card_counter]['study'] = false;
         
         if (studied === cards.length) {
-            console.log('done');
             $('#study_progress').text(studied + '/' + cards.length);
             $('.card-content').hide();
             $('#card_nav_buttons').hide();
@@ -176,12 +161,12 @@ $(document).ready(function()
     });
 
     $('#restart').click(function(){
-        console.log('restart');
         $('#restart').blur();
         $('#finished').hide();
         studied = 0;
         card_counter = 0;
         past_counters.length = 0;
+        past_counters.push(0);
         rewind = 0;
         for (var i = 0; i < cards.length; i++) {
             cards[i]['study'] = true;
@@ -192,7 +177,47 @@ $(document).ready(function()
             $('.card-content').toggleClass('flipped');
         };
         $('.card-content').show();
+        $('#card_nav_buttons').show();
     });
+
+    // Edit card
+    $('#edit_card_form').submit(function(e) {
+        e.preventDefault();
+        var id = $('#card_id').val();
+        var order = parseInt($('#edit_card_order').val());
+        var front = $('#edit_card_front').val();
+        if (front.length >= 280) {
+            document.getElementById('edit_card_front').setCustomValidity("Card face must have less than 280 characters");
+            return;
+        };
+        var back = $('#edit_card_back').val();
+        if (back.length >= 280) {
+            document.getElementById('edit_card_back').setCustomValidity("Card face must have less than 280 characters");
+            return;
+        };
+
+        $.ajax({
+        url : "edit_card",
+        type : "POST",
+        headers: {'X-CSRFToken': csrftoken},
+        data : { front : front, back : back, order : order, id : id },
+
+        success : function() {
+            $('#edit_card_id').val('');
+            $('#edit_card_order').val('');
+            $('#edit_card_front').val('');
+            $('#edit_card_back').val('');
+            $('#edit_card_modal').modal('hide');
+            $('#card_content').load(location.href+" #card_content>*","");
+        },
+
+        error : function(xhr,errmsg) {
+            $('#edit_status').text(errmsg);
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+        });
+    });
+
 
     function set_card_counter() {
         if (rewind < past_counters.length - 1 && rewind >= 0){
@@ -224,12 +249,26 @@ $(document).ready(function()
             };
             past_counters.push(card_counter);
         };
-        console.log("card counter: " + card_counter);
+        /* console.log("card counter: " + card_counter);
         console.log('studied: ' + studied);
         console.log('past counter length: ' + past_counters.length);
         console.log('past counters: ' + past_counters)
         console.log('rewind: ' + rewind);
-        console.log("");
+        console.log(""); */
+    };
+
+    function display_card() {
+        if (window.start === 'front') {
+            $('#front_text').text(cards[card_counter]['front']);
+            $('#back_text').text(cards[card_counter]['back']);
+        }
+        else {
+            $('#front_text').text(cards[card_counter]['back']);
+            $('#back_text').text(cards[card_counter]['front']);
+        };
+        $('#order').text(cards[card_counter]['order']);
+        $('#card_id').text(cards[card_counter]['id']);
+        $('#study_progress').text(studied + '/' + cards.length);
     };
 
     function swipe() {
@@ -259,7 +298,6 @@ $(document).ready(function()
             // Swipe right
             if (touchendX - touchstartX <= -10 && !vertical()) {
                 event.stopImmediatePropagation();
-                console.log('right');
                 set_card_counter();
                 display_card();
                 
@@ -271,15 +309,14 @@ $(document).ready(function()
             // Swipe left
             else if (touchstartX - touchendX <= 10 && !vertical()) {
                 event.stopImmediatePropagation();
-                console.log('left');
                 if (rewind > 0) {
                     rewind -= 1;
                 };
                 card_counter = past_counters[rewind];
                 
-                console.log('card counter: ' + card_counter);
+                /* console.log('card counter: ' + card_counter);
                 console.log('back rewind: ' + rewind);
-                console.log('');
+                console.log(''); */
                 display_card();
     
                 if ($('.card-content').hasClass('flipped')){
@@ -334,6 +371,10 @@ $(document).ready(function()
             };
         };
     }
+
+    $('#create_deck').on('show.bs.modal', function(){
+        $('#create_deck').find('#deck_name').focus();
+    });
 
     $('#settings-modal').on('hide.bs.modal', function(){
         $('.error-message').text('');

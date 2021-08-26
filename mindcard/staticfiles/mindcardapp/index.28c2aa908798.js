@@ -79,4 +79,8 @@ $(document).ready(function()
             };
         }
     });
+
+    $('#create_deck').on('show.bs.modal', function(){
+        $('#create_deck').find('#deck_name').focus();
+    });
 });

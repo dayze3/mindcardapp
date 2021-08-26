@@ -197,7 +197,7 @@ deck-card-info{
     justify-content: center;
     position: absolute;
     height: 100%;
-    padding: 5px;
+    width: 100%;
     backface-visibility: hidden;
     display: flex;
     flex-direction: column;

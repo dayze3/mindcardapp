@@ -58,7 +58,7 @@ h3 {
     color: #2b4a4a;
 }
 
-.nav-link, a .nav-link:focus {
+.nav-link, .nav-link:focus {
     color: var(--darkgreen);
     padding: 2px;
 }
@@ -156,15 +156,18 @@ button:focus {
     margin: auto;
 }
 
+.authentication-error, .error-message {
+    font-size: smaller;
+    color: lightcoral;
+    font-style: italic;
+}
+
 .authentication-error {
     display: flex;
-    font-size: smaller;
-    text-align: center;
-    color: lightcoral;
     align-items: center;
     justify-content: center;
     margin: 0px auto 0px auto;
-    font-style: italic;
+    text-align: center;
 }
 
 /* Index */
@@ -194,7 +197,7 @@ deck-card-info{
     justify-content: center;
     position: absolute;
     height: 100%;
-    width: 100%;
+    padding: 5px;
     backface-visibility: hidden;
     display: flex;
     flex-direction: column;

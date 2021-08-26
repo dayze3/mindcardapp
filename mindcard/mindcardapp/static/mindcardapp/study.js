@@ -4,7 +4,6 @@ $(document).ready(function()
     window.start = 'front';
     $('#finished').hide();
     const csrftoken = Cookies.get('csrftoken');
-    const cards_data = JSON.parse(document.getElementById('cards').textContent).split(', ');
     var studied = 0;
     var cards = [];
     var past_counters = [];
@@ -341,6 +340,7 @@ $(document).ready(function()
     };
 
     function create_card_array() {
+        const cards_data = JSON.parse(document.getElementById('cards').textContent).split(', ');
         var dict_counter = 0;
         var card_dict = {};
         for (var i = 0; i < cards_data.length; i++) {
@@ -349,11 +349,11 @@ $(document).ready(function()
             
             // Split values on quotes to get rid of brackets and quotes
             var key = split_card[0].split('"')[1];
-            var value = split_card[1].split('"')[1];
+            var value = JSON.parse('"' + split_card[1].split('"')[1] + '"');
             
             // Some values are the first element after split, some second
             if (value === undefined) {
-                value = split_card[1].split('"')[0];
+                value = JSON.parse('"' + split_card[1].split('"')[0] + '"');
             }
             // If value is int, make it an int
             if (!isNaN(value)) {
